@@ -32,8 +32,16 @@ flutter doctor # may complain about not being able to determine VSCode Version
 
 ## Repo initial setup
 
+Commit `flutter create`:
+
 ```bash
 set -Ux CHROME_EXECUTABLE /snap/bin/chromium 
 flutter create --org kiwi.lowe.mymail --project-name mymail .
+```
 
+Commit `flutter pub get install graphql and amplify`:
+
+```bash
+# Add dependancies to pubspec.yaml
+flutter pub get
 ```
