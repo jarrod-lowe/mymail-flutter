@@ -1,0 +1,59 @@
+const amplifyconfig = '''{
+    "auth": {
+        "plugins": {
+            "awsCognitoAuthPlugin": {
+                "Auth": {
+                    "Default": {
+                        "authenticationFlowType": "USER_SRP_AUTH",
+                        "usernameAttributes": ["email"],
+                        "signupAttributes": ["email"],
+                        "passwordProtectionSettings": {
+                            "requiredLength": 6,
+                            "requireUppercase": false,
+                            "requireLowercase": false,
+                            "requireNumbers": false,
+                            "requireSymbols": false
+                        },
+                        "userPoolConfig": {
+                            "PoolId": "YOUR_USER_POOL_ID",
+                            "AppClientId": "YOUR_APP_CLIENT_ID",
+                            "Region": "YOUR_REGION"
+                        }
+                    }
+                },
+                "UserAgent": "aws-amplify-cli/0.1.0",
+                "Version": "0.1.0",
+                "IdentityManager": {
+                    "Default": {}
+                },
+                "CredentialsProvider": {
+                    "CognitoIdentity": {
+                        "Default": {
+                            "PoolId": "YOUR_IDENTITY_POOL_ID",
+                            "Region": "YOUR_REGION"
+                        }
+                    }
+                },
+                "CognitoUserPool": {
+                    "Default": {
+                        "PoolId": "YOUR_USER_POOL_ID",
+                        "AppClientId": "YOUR_APP_CLIENT_ID",
+                        "Region": "YOUR_REGION"
+                    }
+                }
+            }
+        }
+    },
+    "api": {
+        "plugins": {
+            "awsAPIPlugin": {
+                "YOUR_API_NAME": {
+                    "endpointType": "GraphQL",
+                    "endpoint": "YOUR_GRAPHQL_ENDPOINT",
+                    "region": "YOUR_REGION",
+                    "authorizationType": "AMAZON_COGNITO_USER_POOLS"
+                }
+            }
+        }
+    }
+}''';

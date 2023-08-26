@@ -5,6 +5,8 @@
 Firstly, download Android Studio from <https://developer.android.com/studio> or
 <https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2022.3.1.18/android-studio-2022.3.1.18-linux.tar.gz>.
 
+Check out the repo, and cd into it.
+
 ```bash
 sudo snap install flutter --classic
 sudo snap install chromium
@@ -29,6 +31,8 @@ yes | flutter doctor --android-licenses
 set -Ux CHROME_EXECUTABLE /snap/bin/chromium 
 flutter doctor # may complain about not being able to determine VSCode Version
 ```
+
+Copy `lib/amplifyconfiguration.dart.example` to `lib/amplifyconfiguration.dart`, and replace the all-caps terms.
 
 ## Repo initial setup
 
