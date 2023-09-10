@@ -1,3 +1,8 @@
+const region = "YOUR-REGION-1";
+const poolId = "YOURPOOLID";
+const appClientId = "YOURAPPCLIENTID";
+const cognitoIdentityPoolId = "COGNITO-XXXX-XXXX-XXXX-IDENTITYPOOLID";
+const graphqlId = "YOURGRAPHQLID";
 const amplifyconfig = '''{
     "auth": {
         "plugins": {
@@ -6,7 +11,7 @@ const amplifyconfig = '''{
                     "Default": {
                         "authenticationFlowType": "USER_SRP_AUTH",
                         "usernameAttributes": ["email"],
-                        "signupAttributes": ["email"],
+                        "signupAttributes": ["email", "name"],
                         "passwordProtectionSettings": {
                             "requiredLength": 6,
                             "requireUppercase": false,
@@ -15,9 +20,9 @@ const amplifyconfig = '''{
                             "requireSymbols": false
                         },
                         "userPoolConfig": {
-                            "PoolId": "YOUR_USER_POOL_ID",
-                            "AppClientId": "YOUR_APP_CLIENT_ID",
-                            "Region": "YOUR_REGION"
+                            "PoolId": "${region}_${poolId}",
+                            "AppClientId": "${appClientId}",
+                            "Region": "${region}"
                         }
                     }
                 },
@@ -29,16 +34,16 @@ const amplifyconfig = '''{
                 "CredentialsProvider": {
                     "CognitoIdentity": {
                         "Default": {
-                            "PoolId": "YOUR_IDENTITY_POOL_ID",
-                            "Region": "YOUR_REGION"
+                            "PoolId": "${region}:${cognitoIdentityPoolId}",
+                            "Region": "${region}"
                         }
                     }
                 },
                 "CognitoUserPool": {
                     "Default": {
-                        "PoolId": "YOUR_USER_POOL_ID",
-                        "AppClientId": "YOUR_APP_CLIENT_ID",
-                        "Region": "YOUR_REGION"
+                        "PoolId": "${region}_${poolId}",
+                        "AppClientId": "${appClientId}",
+                        "Region": "${region}"
                     }
                 }
             }
@@ -49,8 +54,8 @@ const amplifyconfig = '''{
             "awsAPIPlugin": {
                 "YOUR_API_NAME": {
                     "endpointType": "GraphQL",
-                    "endpoint": "YOUR_GRAPHQL_ENDPOINT",
-                    "region": "YOUR_REGION",
+                    "endpoint": "https://${graphqlId}.appsync-api.${region}.amazonaws.com/graphql",
+                    "region": "${region}",
                     "authorizationType": "AMAZON_COGNITO_USER_POOLS"
                 }
             }
