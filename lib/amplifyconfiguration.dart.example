@@ -4,14 +4,17 @@ const appClientId = "YOURAPPCLIENTID";
 const cognitoIdentityPoolId = "COGNITO-XXXX-XXXX-XXXX-IDENTITYPOOLID";
 const graphqlId = "YOURGRAPHQLID";
 const amplifyconfig = '''{
+    "UserAgent": "aws-amplify-cli/2.0",
+    "Version": "1.0",
     "auth": {
         "plugins": {
             "awsCognitoAuthPlugin": {
                 "Auth": {
                     "Default": {
                         "authenticationFlowType": "USER_SRP_AUTH",
-                        "usernameAttributes": ["email"],
-                        "signupAttributes": ["email", "name"],
+                        "socialProviders": [],
+                        "usernameAttributes": ["EMAIL"],
+                        "signupAttributes": ["EMAIL"],
                         "passwordProtectionSettings": {
                             "requiredLength": 6,
                             "requireUppercase": false,
@@ -19,15 +22,11 @@ const amplifyconfig = '''{
                             "requireNumbers": false,
                             "requireSymbols": false
                         },
-                        "userPoolConfig": {
-                            "PoolId": "${region}_${poolId}",
-                            "AppClientId": "${appClientId}",
-                            "Region": "${region}"
-                        }
+                        "mfaConfiguration": "OPTIONAL",
+                        "mfaTypes": ["TOTP"],
+                        "verificationMechanisms": ["EMAIL"]
                     }
                 },
-                "UserAgent": "aws-amplify-cli/0.1.0",
-                "Version": "0.1.0",
                 "IdentityManager": {
                     "Default": {}
                 },
