@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
               useMaterial3: true,
             ),
             builder: Authenticator.builder(),
-            home: MyHomePage(title: 'Flutter Demo Home Page'),
+            home: const MyHomePage(title: 'Flutter Demo Home Page'),
           ),
         ));
   }
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout), // or another relevant icon
+            icon: const Icon(Icons.logout), // or another relevant icon
             onPressed: _signOut,
           )
         ],
@@ -154,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (signedOut) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => MyApp(),
+          builder: (context) => const MyApp(),
         ));
       });
     }

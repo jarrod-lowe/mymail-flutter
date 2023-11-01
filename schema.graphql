@@ -1,0 +1,364 @@
+type Mailbox @aws_iam @aws_cognito_user_pools {
+  owner: ID!
+  #threads(updatedAt: ModelStringKeyConditionInput, filter: ModelThreadFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelThreadConnection
+  name: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+}
+
+#type Thread @aws_iam @aws_cognito_user_pools {
+#  id: ID!
+#  owner: ID!
+#  updatedAt: AWSDateTime!
+#  createdAt: AWSDateTime!
+#  _version: Int!
+#  _deleted: Boolean
+#}
+#
+#type Message @aws_iam @aws_cognito_user_pools {
+#  id: ID!
+#  content: String!
+#  threadId: ID!
+#  owner: ID!
+#  updatedAt: AWSDateTime!
+#  createdAt: AWSDateTime!
+#  _version: Int!
+#  _deleted: Boolean
+#}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+#input ModelSubscriptionStringInput {
+#  ne: String
+#  eq: String
+#  le: String
+#  lt: String
+#  ge: String
+#  gt: String
+#  contains: String
+#  notContains: String
+#  between: [String]
+#  beginsWith: String
+#  in: [String]
+#  notIn: [String]
+#}
+#
+#input ModelSubscriptionIntInput {
+#  ne: Int
+#  eq: Int
+#  le: Int
+#  lt: Int
+#  ge: Int
+#  gt: Int
+#  between: [Int]
+#  in: [Int]
+#  notIn: [Int]
+#}
+#
+#input ModelSubscriptionFloatInput {
+#  ne: Float
+#  eq: Float
+#  le: Float
+#  lt: Float
+#  ge: Float
+#  gt: Float
+#  between: [Float]
+#  in: [Float]
+#  notIn: [Float]
+#}
+#
+#input ModelSubscriptionBooleanInput {
+#  ne: Boolean
+#  eq: Boolean
+#}
+#
+#input ModelSubscriptionIDInput {
+#  ne: ID
+#  eq: ID
+#  le: ID
+#  lt: ID
+#  ge: ID
+#  gt: ID
+#  contains: ID
+#  notContains: ID
+#  between: [ID]
+#  beginsWith: ID
+#  in: [ID]
+#  notIn: [ID]
+#}
+#
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+#enum ModelSortDirection {
+#  ASC
+#  DESC
+#}
+
+type Query {
+  getMailbox(owner: ID!): Mailbox @aws_iam @aws_cognito_user_pools
+#  getThread(id: ID!): Thread @aws_iam @aws_cognito_user_pools
+#  listLatestThreadsForMailbox(owner: ID!, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelThreadFilterInput, limit: Int, nextToken: String): ModelThreadConnection @aws_iam @aws_cognito_user_pools
+#  getMessage(id: ID!): Message @aws_iam @aws_cognito_user_pools
+#  listLatestMessagesForThread(threadId: ID!, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelMessageFilterInput, limit: Int, nextToken: String): ModelMessageConnection @aws_iam @aws_cognito_user_pools
+#  listLatestMessagesForMailbox(owner: ID!, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelMessageFilterInput, limit: Int, nextToken: String): ModelMessageConnection @aws_iam @aws_cognito_user_pools
+}
+
+#input ModelMailboxConditionInput {
+#  name: ModelStringInput
+#  and: [ModelMailboxConditionInput]
+#  or: [ModelMailboxConditionInput]
+#  not: ModelMailboxConditionInput
+#  _deleted: ModelBooleanInput
+#}
+#
+#input CreateMailboxInput {
+#  owner: ID!
+#  name: String!
+#  _version: Int
+#}
+#
+#input UpdateMailboxInput {
+#  owner: ID!
+#  name: String
+#  _version: Int
+#}
+#
+#input DeleteMailboxInput {
+#  owner: ID!
+#  _version: Int
+#}
+#
+#type Mutation {
+#  createMailbox(input: CreateMailboxInput!, condition: ModelMailboxConditionInput): Mailbox @aws_iam
+#  updateMailbox(input: UpdateMailboxInput!, condition: ModelMailboxConditionInput): Mailbox @aws_iam
+#  deleteMailbox(input: DeleteMailboxInput!, condition: ModelMailboxConditionInput): Mailbox @aws_iam
+#  createThread(input: CreateThreadInput!, condition: ModelThreadConditionInput): Thread @aws_iam
+#  updateThread(input: UpdateThreadInput!, condition: ModelThreadConditionInput): Thread @aws_iam
+#  deleteThread(input: DeleteThreadInput!, condition: ModelThreadConditionInput): Thread @aws_iam
+#  createMessage(input: CreateMessageInput!, condition: ModelMessageConditionInput): Message @aws_iam
+#  updateMessage(input: UpdateMessageInput!, condition: ModelMessageConditionInput): Message @aws_iam
+#  deleteMessage(input: DeleteMessageInput!, condition: ModelMessageConditionInput): Message @aws_iam
+#}
+#
+#input ModelSubscriptionMailboxFilterInput {
+#  name: ModelSubscriptionStringInput
+#  and: [ModelSubscriptionMailboxFilterInput]
+#  or: [ModelSubscriptionMailboxFilterInput]
+#  _deleted: ModelBooleanInput
+#}
+#
+#type Subscription {
+#  onCreateMailbox(filter: ModelSubscriptionMailboxFilterInput, owner: String): Mailbox @aws_subscribe(mutations: ["createMailbox"]) @aws_iam @aws_cognito_user_pools
+#  onUpdateMailbox(filter: ModelSubscriptionMailboxFilterInput, owner: String): Mailbox @aws_subscribe(mutations: ["updateMailbox"]) @aws_iam @aws_cognito_user_pools
+#  onDeleteMailbox(filter: ModelSubscriptionMailboxFilterInput, owner: String): Mailbox @aws_subscribe(mutations: ["deleteMailbox"]) @aws_iam @aws_cognito_user_pools
+#  onCreateThread(filter: ModelSubscriptionThreadFilterInput, owner: String): Thread @aws_subscribe(mutations: ["createThread"]) @aws_iam @aws_cognito_user_pools
+#  onUpdateThread(filter: ModelSubscriptionThreadFilterInput, owner: String): Thread @aws_subscribe(mutations: ["updateThread"]) @aws_iam @aws_cognito_user_pools
+#  onDeleteThread(filter: ModelSubscriptionThreadFilterInput, owner: String): Thread @aws_subscribe(mutations: ["deleteThread"]) @aws_iam @aws_cognito_user_pools
+#  onCreateMessage(filter: ModelSubscriptionMessageFilterInput, owner: String): Message @aws_subscribe(mutations: ["createMessage"]) @aws_iam @aws_cognito_user_pools
+#  onUpdateMessage(filter: ModelSubscriptionMessageFilterInput, owner: String): Message @aws_subscribe(mutations: ["updateMessage"]) @aws_iam @aws_cognito_user_pools
+#  onDeleteMessage(filter: ModelSubscriptionMessageFilterInput, owner: String): Message @aws_subscribe(mutations: ["deleteMessage"]) @aws_iam @aws_cognito_user_pools
+#}
+#
+#input ModelThreadConditionInput {
+#  owner: ModelIDInput
+#  updatedAt: ModelStringInput
+#  and: [ModelThreadConditionInput]
+#  or: [ModelThreadConditionInput]
+#  not: ModelThreadConditionInput
+#  _deleted: ModelBooleanInput
+#}
+#
+#input CreateThreadInput {
+#  id: ID
+#  owner: ID!
+#  updatedAt: AWSDateTime
+#  _version: Int
+#}
+#
+#input UpdateThreadInput {
+#  id: ID!
+#  owner: ID
+#  updatedAt: AWSDateTime
+#  _version: Int
+#}
+#
+#input DeleteThreadInput {
+#  id: ID!
+#  _version: Int
+#}
+#
+#input ModelSubscriptionThreadFilterInput {
+#  id: ModelSubscriptionIDInput
+#  updatedAt: ModelSubscriptionStringInput
+#  and: [ModelSubscriptionThreadFilterInput]
+#  or: [ModelSubscriptionThreadFilterInput]
+#  _deleted: ModelBooleanInput
+#}
+#
+#input ModelMessageConditionInput {
+#  content: ModelStringInput
+#  threadId: ModelIDInput
+#  owner: ModelIDInput
+#  updatedAt: ModelStringInput
+#  and: [ModelMessageConditionInput]
+#  or: [ModelMessageConditionInput]
+#  not: ModelMessageConditionInput
+#  _deleted: ModelBooleanInput
+#}
+#
+#input CreateMessageInput {
+#  id: ID
+#  content: String!
+#  threadId: ID!
+#  owner: ID!
+#  updatedAt: AWSDateTime
+#  _version: Int
+#}
+#
+#input UpdateMessageInput {
+#  id: ID!
+#  content: String
+#  threadId: ID
+#  owner: ID
+#  updatedAt: AWSDateTime
+#  _version: Int
+#}
+#
+#input DeleteMessageInput {
+#  id: ID!
+#  _version: Int
+#}
+#
+#input ModelSubscriptionMessageFilterInput {
+#  id: ModelSubscriptionIDInput
+#  content: ModelSubscriptionStringInput
+#  threadId: ModelSubscriptionIDInput
+#  updatedAt: ModelSubscriptionStringInput
+#  and: [ModelSubscriptionMessageFilterInput]
+#  or: [ModelSubscriptionMessageFilterInput]
+#  _deleted: ModelBooleanInput
+#}
+#
+#input ModelThreadFilterInput {
+#  id: ModelIDInput
+#  owner: ModelIDInput
+#  updatedAt: ModelStringInput
+#  and: [ModelThreadFilterInput]
+#  or: [ModelThreadFilterInput]
+#  not: ModelThreadFilterInput
+#}
+#
+#type ModelThreadConnection @aws_iam @aws_cognito_user_pools {
+#  items: [Thread]!
+#  nextToken: String
+#}
+#
+#input ModelStringKeyConditionInput {
+#  eq: String
+#  le: String
+#  lt: String
+#  ge: String
+#  gt: String
+#  between: [String]
+#  beginsWith: String
+#}
+#
+#input ModelMessageFilterInput {
+#  id: ModelIDInput
+#  content: ModelStringInput
+#  threadId: ModelIDInput
+#  owner: ModelIDInput
+#  updatedAt: ModelStringInput
+#  and: [ModelMessageFilterInput]
+#  or: [ModelMessageFilterInput]
+#  not: ModelMessageFilterInput
+#}
+#
+#type ModelMessageConnection @aws_iam @aws_cognito_user_pools {
+#  items: [Message]!
+#  nextToken: String
+#}
