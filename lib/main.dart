@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_authenticator/amplify_authenticator.dart';
@@ -66,8 +67,93 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class AuthException implements Exception {
+  final String message;
+  final Exception innerException;
+
+  AuthException(this.message, this.innerException);
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String mailboxName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getMailboxName();
+  }
+
+  Future<String> getMailboxName() async {
+    JsonWebToken idToken;
+    AuthUser user;
+    String name;
+
+    try {
+      final cognito = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+      final session = await cognito.fetchAuthSession();
+      //final identityId = session.identityIdResult.value;
+      idToken = session.userPoolTokensResult.value.idToken;
+    } on CognitoServiceException catch (e) {
+      throw AuthException('Failed to get auth session', e);
+    }
+
+    try {
+      user = await Amplify.Auth.getCurrentUser();
+    } on AmplifyException catch (e) {
+      throw AuthException('Failed to get current user', e);
+    }
+
+    AuthLink authLink = AuthLink(getToken: () async => 'Bearer $idToken');
+    HttpLink httpLink = HttpLink(graphqlUrl);
+    Link link = authLink.concat(httpLink);
+
+    try {
+      final GraphQLClient client = GraphQLClient(
+        link: link,
+        cache: GraphQLCache(),
+      );
+
+      final QueryResult result = await client.query(
+        QueryOptions(
+          document: gql(
+            '''
+              query GetMailboxForUser {
+                getMailbox(owner: {eq: "${user.userId}"}) { 
+                  name
+                }
+              }
+            ''',
+          ),
+        ),
+      );
+
+      if (result.hasException) {
+        if (result.exception?.linkException != null) {
+          throw result.exception!.linkException!;
+        }
+        if (result.exception?.graphqlErrors != null &&
+            result.exception!.graphqlErrors.isNotEmpty) {
+          throw result.exception!.graphqlErrors[0];
+        }
+        throw Exception("unknown graphql error: ${result.exception}");
+      }
+
+      if (result.data != null) {
+        name = result.data!['mailbox']['name'];
+      } else {
+        name = "unknown> ${user.userId}";
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+
+    setState(() {
+      mailboxName = name;
+    });
+    return name;
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -96,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(mailboxName),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout), // or another relevant icon
