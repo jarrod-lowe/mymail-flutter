@@ -1,0 +1,34 @@
+schemaVersion: 2.1.0
+metadata:
+  name: dart-flutter
+  version: 1.0.0
+components:
+  - name: vscode-dart
+    container:
+      image: cirrusci/flutter:latest
+      endpoints:
+        - name: http
+          exposure: public
+          targetPort: 8080
+          protocol: http
+      mountSources: true
+      memoryLimit: 2Gi
+      command:
+        - sleep
+      args:
+        - infinity
+#  - name: flutter-tools
+#    plugin:
+#      id: Dart-Code.flutter
+#      registryUrl: 'https://open-vsx.org/vscode/gallery/extensions'
+commands:
+  - id: install-dependencies
+    exec:
+      component: vscode-dart
+      commandLine: flutter pub get
+      workingDir: ${PROJECTS_ROOT}
+  - id: run-app
+    exec:
+      component: vscode-dart
+      commandLine: flutter run
+      workingDir: ${PROJECTS_ROOT}
