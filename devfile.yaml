@@ -1,11 +1,11 @@
 schemaVersion: 2.1.0
 metadata:
-  name: dart-flutter
+  name: flutter
   version: 1.0.0
 components:
-  - name: vscode-dart
+  - name: flutter-environment
     container:
-      image: cirrusci/flutter:latest
+      image: ghcr.io/cirruslabs/flutter:latest
       endpoints:
         - name: http
           exposure: public
@@ -24,11 +24,16 @@ components:
 commands:
   - id: install-dependencies
     exec:
-      component: vscode-dart
+      component: flutter-environment
       commandLine: flutter pub get
-      workingDir: ${PROJECTS_ROOT}
+      workingDir: ${PROJECTS_ROOT}/mymail-flutter
   - id: run-app
     exec:
-      component: vscode-dart
+      component: flutter-environment
       commandLine: flutter run
-      workingDir: ${PROJECTS_ROOT}
+      workingDir: ${PROJECTS_ROOT}/mymail-flutter
+  - id: debug-shell
+    exec:
+      component: flutter-environment
+      commandLine: "pwd"
+      workingDir: ${PROJECTS_ROOT}/mymail-flutter
