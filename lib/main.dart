@@ -86,6 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<String> getMailboxName() async {
     JsonWebToken idToken;
+    String idTokenRaw;
     AuthUser user;
     String name;
 
@@ -94,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final session = await cognito.fetchAuthSession();
       //final identityId = session.identityIdResult.value;
       idToken = session.userPoolTokensResult.value.idToken;
+      idTokenRaw = idToken.raw;
     } on CognitoServiceException catch (e) {
       throw AuthException('Failed to get auth session', e);
     }
@@ -104,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
       throw AuthException('Failed to get current user', e);
     }
 
-    AuthLink authLink = AuthLink(getToken: () async => 'Bearer $idToken');
+    AuthLink authLink = AuthLink(getToken: () async => 'Bearer $idTokenRaw');
     HttpLink httpLink = HttpLink(graphqlUrl);
     Link link = authLink.concat(httpLink);
 
@@ -114,6 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
         cache: GraphQLCache(),
       );
 
+      print('userId $user.userId');
       final QueryResult result = await client.query(
         QueryOptions(
           document: gql(

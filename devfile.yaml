@@ -32,6 +32,11 @@ commands:
       component: flutter-environment
       commandLine: flutter run
       workingDir: ${PROJECTS_ROOT}/mymail-flutter
+  - id: run-web
+    exec:
+      component: flutter-environment
+      commandLine: flutter run -d web-server --web-port=8080
+      workingDir: ${PROJECTS_ROOT}/mymail-flutter
   - id: debug-shell
     exec:
       component: flutter-environment

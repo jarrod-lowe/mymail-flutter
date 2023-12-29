@@ -1,8 +1,9 @@
 const region = "YOUR-REGION-1";
-const poolId = "YOURPOOLID";
-const appClientId = "YOURAPPCLIENTID";
-const cognitoIdentityPoolId = "COGNITO-XXXX-XXXX-XXXX-IDENTITYPOOLID";
-const graphqlId = "YOURGRAPHQLID";
+const poolId = "YOURPOOLID"; # Cognito -> User Pool -> us-east-1_YOURPOOLID (eg)
+const appClientId = "YOURAPPCLIENTID"; # Cognito -> User Pool -> App Integration -> App Client List
+const cognitoIdentityPoolId = "COGNITO-XXXX-XXXX-XXXX-IDENTITYPOOLID"; # Cognito -> Identity Pool, us-east-1:THISBITHERE (eg)
+const graphqlId = "YOURGRAPHQLID"; # The portion from the URL
+const graphqlUrl = "https://${graphqlId}.appsync-api.${region}.amazonaws.com/graphql";
 const amplifyconfig = '''{
     "UserAgent": "aws-amplify-cli/2.0",
     "Version": "1.0",
@@ -53,7 +54,7 @@ const amplifyconfig = '''{
             "awsAPIPlugin": {
                 "YOUR_API_NAME": {
                     "endpointType": "GraphQL",
-                    "endpoint": "https://${graphqlId}.appsync-api.${region}.amazonaws.com/graphql",
+                    "endpoint": "${graphqlUrl}",
                     "region": "${region}",
                     "authorizationType": "AMAZON_COGNITO_USER_POOLS"
                 }
