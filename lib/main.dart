@@ -116,13 +116,12 @@ class _MyHomePageState extends State<MyHomePage> {
         cache: GraphQLCache(),
       );
 
-      print('userId $user.userId');
       final QueryResult result = await client.query(
         QueryOptions(
           document: gql(
             '''
               query GetMailboxForUser {
-                getMailbox(owner: {eq: "${user.userId}"}) { 
+                getMailbox(owner: "${user.userId}") { 
                   name
                 }
               }
@@ -143,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
 
       if (result.data != null) {
-        name = result.data!['mailbox']['name'];
+        name = result.data!['getMailbox']['name'];
       } else {
         name = "unknown> ${user.userId}";
       }
